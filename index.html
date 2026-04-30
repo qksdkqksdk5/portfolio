@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이동훈 — AI & Backend Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Mono:wght@300;400;500&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black: #0e0e0e;
+    --white: #fafaf8;
+    --gray-100: #f0efe9;
+    --gray-300: #c8c7bf;
+    --gray-500: #888880;
+    --gray-700: #444440;
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1d4ed8;
+    --green: #059669;
+    --green-light: #d1fae5;
+    --amber: #d97706;
+    --amber-light: #fef3c7;
+    --red: #dc2626;
+    --red-light: #fee2e2;
+    --mono: 'DM Mono', monospace;
+    --serif: 'Playfair Display', serif;
+    --sans: 'Noto Sans KR', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); background: var(--white); color: var(--black); line-height: 1.7; overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px; height: 60px;
+    background: rgba(250,250,248,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--gray-300);
+  }
+  .nav-logo { font-family: var(--mono); font-size: 13px; color: var(--gray-700); letter-spacing: 0.05em; }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a { font-size: 13px; color: var(--gray-500); text-decoration: none; letter-spacing: 0.03em; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--black); }
+
+  section { min-height: 100vh; }
+
+  /* HERO */
+  #hero { display: flex; flex-direction: column; justify-content: center; padding: 120px 80px 80px; position: relative; overflow: hidden; }
+  .hero-eyebrow { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+  .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--accent); }
+  .hero-name { font-size: clamp(52px, 8vw, 96px); font-weight: 700; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 8px; }
+  .hero-name-en { font-family: var(--serif); font-size: clamp(20px, 3vw, 36px); font-weight: 400; color: var(--gray-500); margin-bottom: 32px; letter-spacing: 0.02em; }
+  .hero-desc { font-size: 17px; color: var(--gray-700); max-width: 560px; line-height: 1.8; margin-bottom: 48px; }
+  .hero-badges { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 48px; }
+  .badge { font-family: var(--mono); font-size: 11px; padding: 6px 14px; border-radius: 100px; letter-spacing: 0.05em; }
+  .badge-blue { background: var(--accent-light); color: var(--accent-dark); }
+  .badge-green { background: var(--green-light); color: var(--green); }
+  .badge-amber { background: var(--amber-light); color: var(--amber); }
+  .hero-contacts { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+  .contact-item { font-family: var(--mono); font-size: 12px; color: var(--gray-500); display: flex; align-items: center; gap: 8px; }
+  .contact-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+  .hero-bg-text { position: absolute; right: -20px; bottom: 60px; font-size: clamp(100px, 18vw, 220px); font-weight: 700; color: var(--gray-100); letter-spacing: -0.05em; line-height: 1; user-select: none; pointer-events: none; }
+  #hero > *:not(.hero-bg-text) { position: relative; z-index: 1; }
+
+  /* SECTION COMMON */
+  .section-inner { max-width: 960px; margin: 0 auto; padding: 100px 48px; }
+  .section-label { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; display: flex; align-items: center; gap: 12px; margin-bottom: 48px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--gray-300); }
+
+  /* ABOUT */
+  #about { background: var(--gray-100); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+  .about-text h2 { font-size: 32px; font-weight: 700; line-height: 1.3; margin-bottom: 24px; letter-spacing: -0.02em; }
+  .about-text p { font-size: 15px; color: var(--gray-700); line-height: 1.9; margin-bottom: 16px; }
+  .skills-list { display: flex; flex-direction: column; gap: 20px; }
+  .skill-group-label { font-family: var(--mono); font-size: 11px; color: var(--gray-500); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .skill-tag { font-family: var(--mono); font-size: 11px; padding: 5px 12px; background: var(--white); border: 1px solid var(--gray-300); border-radius: 4px; color: var(--gray-700); letter-spacing: 0.03em; }
+
+  /* PROJECTS */
+  #projects { background: var(--white); }
+  .project-card { border: 1px solid var(--gray-300); border-radius: 16px; overflow: hidden; margin-bottom: 48px; transition: box-shadow 0.3s, transform 0.3s; }
+  .project-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.08); transform: translateY(-2px); }
+
+  .project-header { padding: 36px 40px 28px; border-bottom: 1px solid var(--gray-300); display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
+  .project-period { font-family: var(--mono); font-size: 11px; color: var(--gray-500); letter-spacing: 0.05em; margin-bottom: 10px; }
+  .project-title { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; line-height: 1.3; }
+  .project-subtitle { font-size: 13px; color: var(--gray-500); }
+  .project-type-badge { font-family: var(--mono); font-size: 10px; padding: 5px 12px; background: var(--accent-light); color: var(--accent-dark); border-radius: 100px; letter-spacing: 0.05em; white-space: nowrap; flex-shrink: 0; }
+
+  /* 문제 정의 */
+  .project-problem {
+    padding: 28px 40px;
+    background: var(--gray-100);
+    border-bottom: 1px solid var(--gray-300);
+  }
+  .project-problem-title {
+    font-family: var(--mono); font-size: 11px; color: var(--gray-500);
+    letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px;
+  }
+  .project-problem p { font-size: 14px; color: var(--gray-700); line-height: 1.8; }
+
+  /* 핵심 기능 */
+  .project-body { padding: 32px 40px; }
+  .project-body-title { font-family: var(--mono); font-size: 11px; color: var(--gray-500); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 20px; }
+
+  .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
+  .feature-item { background: var(--gray-100); border-radius: 10px; padding: 20px 22px; }
+  .feature-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .feature-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+  .feature-title { font-size: 13px; font-weight: 700; color: var(--accent); }
+  .feature-desc { font-size: 13px; color: var(--gray-700); line-height: 1.75; }
+
+  /* 설계 포인트 */
+  .design-points { margin-bottom: 32px; }
+  .design-point { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--gray-300); }
+  .design-point:last-child { border-bottom: none; }
+  .design-point-num { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.05em; flex-shrink: 0; padding-top: 2px; min-width: 28px; }
+  .design-point-content {}
+  .design-point-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .design-point-desc { font-size: 13px; color: var(--gray-700); line-height: 1.75; }
+
+  /* 성과 지표 */
+  .metrics-row { display: flex; gap: 12px; margin-bottom: 32px; flex-wrap: wrap; }
+  .metric-card { flex: 1; min-width: 130px; background: var(--gray-100); border-radius: 10px; padding: 16px 20px; }
+  .metric-value { font-family: var(--mono); font-size: 22px; font-weight: 500; color: var(--accent); margin-bottom: 4px; }
+  .metric-label { font-size: 12px; color: var(--gray-500); }
+
+  /* 어려웠던 점 */
+  .challenges { margin-bottom: 32px; }
+  .challenge-item { display: flex; gap: 16px; margin-bottom: 16px; }
+  .challenge-tag { font-family: var(--mono); font-size: 10px; padding: 3px 10px; background: var(--red-light); color: var(--red); border-radius: 100px; height: fit-content; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+  .challenge-tag.solved { background: var(--green-light); color: var(--green); }
+  .challenge-text { font-size: 13px; color: var(--gray-700); line-height: 1.75; }
+
+  /* 스택 */
+  .project-stack { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 24px; border-top: 1px solid var(--gray-300); }
+  .stack-tag { font-family: var(--mono); font-size: 10px; padding: 4px 10px; background: var(--white); border: 1px solid var(--gray-300); border-radius: 4px; color: var(--gray-500); }
+
+  /* SKILLS */
+  #skills { background: var(--gray-100); }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+  .skill-card { background: var(--white); border: 1px solid var(--gray-300); border-radius: 12px; padding: 24px 28px; }
+  .skill-card-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; font-size: 16px; }
+  .skill-card-title { font-size: 14px; font-weight: 700; margin-bottom: 14px; }
+  .skill-card .skill-tags { gap: 6px; }
+  .skill-card .skill-tag { font-size: 10px; padding: 4px 10px; background: var(--gray-100); border: none; }
+  .certs-row { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 40px; }
+  .cert-card { flex: 1; min-width: 220px; background: var(--white); border: 1px solid var(--gray-300); border-radius: 12px; padding: 24px 28px; display: flex; align-items: center; gap: 16px; }
+  .cert-icon { width: 44px; height: 44px; border-radius: 10px; background: var(--accent-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 18px; }
+  .cert-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .cert-org { font-size: 12px; color: var(--gray-500); }
+  .cert-date { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-top: 4px; }
+
+  /* EDUCATION */
+  #education { background: var(--white); min-height: auto; }
+  .edu-list { display: flex; flex-direction: column; gap: 0; }
+  .edu-item { display: grid; grid-template-columns: 140px 1fr; gap: 24px; padding: 28px 0; border-bottom: 1px solid var(--gray-300); }
+  .edu-item:last-child { border-bottom: none; }
+  .edu-period { font-family: var(--mono); font-size: 11px; color: var(--gray-500); letter-spacing: 0.05em; padding-top: 3px; }
+  .edu-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .edu-org { font-size: 13px; color: var(--gray-500); margin-bottom: 12px; }
+  .edu-points { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .edu-points li { font-size: 13px; color: var(--gray-700); padding-left: 14px; position: relative; }
+  .edu-points li::before { content: '—'; position: absolute; left: 0; color: var(--gray-300); font-size: 11px; }
+
+  /* CONTACT */
+  #contact { background: var(--black); color: var(--white); min-height: auto; padding: 80px; display: flex; flex-direction: column; justify-content: center; }
+  .contact-inner { max-width: 960px; margin: 0 auto; width: 100%; }
+  .contact-heading { font-size: clamp(32px, 5vw, 56px); font-weight: 700; line-height: 1.15; letter-spacing: -0.03em; margin-bottom: 40px; }
+  .contact-heading span { color: var(--gray-500); }
+  .contact-row { display: flex; gap: 40px; flex-wrap: wrap; margin-bottom: 48px; }
+  .contact-link { display: flex; align-items: center; gap: 10px; color: var(--gray-300); text-decoration: none; font-family: var(--mono); font-size: 13px; letter-spacing: 0.03em; transition: color 0.2s; }
+  .contact-link:hover { color: var(--white); }
+  .contact-link-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+  .footer-bottom { border-top: 1px solid var(--gray-700); padding-top: 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .footer-copy { font-family: var(--mono); font-size: 11px; color: var(--gray-500); letter-spacing: 0.05em; }
+
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    #hero { padding: 100px 24px 60px; }
+    .section-inner { padding: 80px 24px; }
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .feature-grid { grid-template-columns: 1fr; }
+    .project-header { flex-direction: column; }
+    .project-header, .project-problem, .project-body { padding-left: 24px; padding-right: 24px; }
+    .metrics-row { flex-direction: column; }
+    .edu-item { grid-template-columns: 1fr; gap: 8px; }
+    #contact { padding: 60px 24px; }
+    .hero-bg-text { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">LEE DONG-HOON</div>
+  <div class="nav-links">
+    <a href="#about">소개</a>
+    <a href="#projects">프로젝트</a>
+    <a href="#skills">기술</a>
+    <a href="#education">교육</a>
+    <a href="#contact">연락</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-eyebrow">AI & Backend Developer</div>
+  <div class="hero-name">이동훈</div>
+  <div class="hero-name-en">Lee Dong-hoon</div>
+  <p class="hero-desc">컴퓨터공학 전공 기반의 AI 풀스택 개발자.<br>실시간 번호판 인식, LLM 챗봇, CI/CD 인프라 구축까지<br>서비스 전 과정을 설계하고 배포한 경험을 보유합니다.</p>
+  <div class="hero-badges">
+    <span class="badge badge-blue">YOLOv8 · YOLO11n</span>
+    <span class="badge badge-blue">Flask · React</span>
+    <span class="badge badge-green">GPT-4o · RAG</span>
+    <span class="badge badge-green">LangChain · ChromaDB</span>
+    <span class="badge badge-amber">Docker · AWS · Cloudflare</span>
+    <span class="badge badge-amber">정보처리기사 · SQLD</span>
+  </div>
+  <div class="hero-contacts">
+    <div class="contact-item"><div class="contact-dot"></div>010-2077-4366</div>
+    <div class="contact-item"><div class="contact-dot"></div>qksdkqksdk5@naver.com</div>
+    <div class="contact-item"><div class="contact-dot"></div>1997.03.06</div>
+    <div class="contact-item"><div class="contact-dot"></div>희망 연봉: 협의 가능</div>
+  </div>
+  <div class="hero-bg-text">DEV</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-label">About</div>
+    <div class="about-grid fade-in">
+      <div class="about-text">
+        <h2>AI 기반<br>풀스택 개발자입니다.</h2>
+        <p>AI-X 스마트 교통 아카데미에서 교통 이상 징후를 실시간으로 감지·관제하는 풀스택 시스템을 설계부터 배포까지 경험했습니다.</p>
+        <p>GPT-4o 기반 Text-to-SQL 챗봇과 RAG 시스템을 직접 설계하고, Cloudflare Tunnel을 활용한 로컬-클라우드 하이브리드 배포 환경을 단독으로 구축했습니다.</p>
+        <p>빠른 학습력과 책임감을 바탕으로 AI·백엔드 분야에서 즉시 기여 가능한 개발자를 목표로 합니다.</p>
+      </div>
+      <div class="skills-list">
+        <div>
+          <div class="skill-group-label">AI / Vision</div>
+          <div class="skill-tags">
+            <span class="skill-tag">YOLOv8</span><span class="skill-tag">YOLO11n</span><span class="skill-tag">ByteTrack</span><span class="skill-tag">OpenVINO</span><span class="skill-tag">OpenCV</span><span class="skill-tag">Custom OCR</span>
+          </div>
+        </div>
+        <div>
+          <div class="skill-group-label">LLM / RAG</div>
+          <div class="skill-tags">
+            <span class="skill-tag">GPT-4o</span><span class="skill-tag">LangChain</span><span class="skill-tag">ChromaDB</span><span class="skill-tag">Text-to-SQL</span><span class="skill-tag">RAG Pipeline</span>
+          </div>
+        </div>
+        <div>
+          <div class="skill-group-label">Backend / Frontend</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Python</span><span class="skill-tag">Flask</span><span class="skill-tag">Socket.IO</span><span class="skill-tag">React</span><span class="skill-tag">MySQL</span><span class="skill-tag">MongoDB</span>
+          </div>
+        </div>
+        <div>
+          <div class="skill-group-label">Infra / DevOps</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Docker</span><span class="skill-tag">GitHub Actions</span><span class="skill-tag">AWS EC2/RDS</span><span class="skill-tag">Nginx</span><span class="skill-tag">Cloudflare</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-inner">
+    <div class="section-label">Projects</div>
+
+    <!-- ───────── PROJECT 1: 번호판 인식 ───────── -->
+    <div class="project-card fade-in">
+      <div class="project-header">
+        <div>
+          <div class="project-period">2026.03 — 2026.05</div>
+          <div class="project-title">TADS 고도화 — 번호판 인식 모듈</div>
+          <div class="project-subtitle">최종 프로젝트 · 6인 팀 | 번호판 인식 파트 담당</div>
+        </div>
+        <div class="project-type-badge">MAIN PROJECT</div>
+      </div>
+
+      <!-- 문제 정의 -->
+      <div class="project-problem">
+        <div class="project-problem-title">문제 정의</div>
+        <p>교통 관제 시스템에서 차량 번호판을 실시간으로 인식해야 했습니다. 단순 OCR 적용 시 조명 변화, 차량 속도, 번호판 가림 등으로 오인식이 빈번했고, 영업용(노란) 번호판과 일반 번호판의 형식이 달라 하나의 모델로 처리하기 어려웠습니다.</p>
+      </div>
+
+      <div class="project-body">
+        <!-- 핵심 기능 -->
+        <div class="project-body-title">핵심 기능</div>
+        <div class="feature-grid">
+          <div class="feature-item">
+            <div class="feature-header"><div class="feature-dot"></div><div class="feature-title">2단계 파이프라인</div></div>
+            <div class="feature-desc">YOLO11n으로 번호판 영역을 탐지한 뒤, 크롭된 이미지를 YOLOv8n OCR 모델로 문자 인식. 탐지와 인식을 분리해 각 모델이 한 가지 역할에 집중하도록 설계했습니다.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-header"><div class="feature-dot"></div><div class="feature-title">투표 알고리즘</div></div>
+            <div class="feature-desc">동일 번호판을 여러 프레임에서 반복 인식해 가장 많이 나온 결과를 확정. OCR이 한 번 틀려도 최종 결과에 영향을 주지 않아 인식 안정성이 크게 향상됩니다.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-header"><div class="feature-dot"></div><div class="feature-title">색상별 OCR 분기</div></div>
+            <div class="feature-desc">HSV 색공간으로 번호판 색상을 판단해 영업용(노란)과 일반을 분리 처리. 영업용은 지역명 포함 패턴, 일반은 표준 패턴을 적용해 오인식을 방지합니다.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-header"><div class="feature-dot"></div><div class="feature-title">지역명 메모리</div></div>
+            <div class="feature-desc">영업용 번호판은 주행 중 지역명이 가려질 수 있어, 한 번 인식한 지역명을 track ID별로 저장해 이후 프레임에서 재활용. 부분 가림 상황을 보완합니다.</div>
+          </div>
+        </div>
+
+        <!-- 설계 포인트 -->
+        <div class="project-body-title">설계 포인트</div>
+        <div class="design-points">
+          <div class="design-point">
+            <div class="design-point-num">01</div>
+            <div class="design-point-content">
+              <div class="design-point-title">IO 워커 분리</div>
+              <div class="design-point-desc">이미지 저장과 DB 쓰기를 별도 스레드로 분리했습니다. 메인 루프에서 직접 처리하면 파일 저장하는 동안 영상 처리가 블로킹되는 문제가 있어, IO 워커 큐를 통해 영상 처리 속도에 영향이 없도록 설계했습니다.</div>
+            </div>
+          </div>
+          <div class="design-point">
+            <div class="design-point-num">02</div>
+            <div class="design-point-content">
+              <div class="design-point-title">영상 전환 토큰 시스템</div>
+              <div class="design-point-desc">영상을 중간에 바꾸면 이전 영상의 IO 작업이 새 영상 DB에 섞일 수 있습니다. 영상 시작 시 UUID 토큰을 발급하고, 토큰이 다른 작업은 IO 워커가 자동으로 스킵해 데이터 오염을 방지했습니다.</div>
+            </div>
+          </div>
+          <div class="design-point">
+            <div class="design-point-num">03</div>
+            <div class="design-point-content">
+              <div class="design-point-title">ROI 기반 선택적 처리</div>
+              <div class="design-point-desc">화면 전체가 아닌 관심 영역(ROI) 안에 들어온 번호판만 OCR 큐에 전달합니다. 이미 확정된 번호판은 재처리하지 않고, 큐가 가득 찼을 때도 스킵해 처리 속도를 유지합니다.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 성과 지표 -->
+        <div class="project-body-title">성과 지표</div>
+        <div class="metrics-row">
+          <div class="metric-card">
+            <div class="metric-value">95.9%</div>
+            <div class="metric-label">탐지 mAP@50<br>(YOLO11n)</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">99.2%</div>
+            <div class="metric-label">OCR mAP@50<br>(YOLOv8n)</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">4.4ms</div>
+            <div class="metric-label">탐지 처리 시간<br>per frame</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">2.8ms</div>
+            <div class="metric-label">OCR 처리 시간<br>per image</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">12MB</div>
+            <div class="metric-label">전체 모델 크기<br>(두 모델 합산)</div>
+          </div>
+        </div>
+
+        <!-- 어려웠던 점 -->
+        <div class="project-body-title">어려웠던 점과 해결</div>
+        <div class="challenges">
+          <div class="challenge-item">
+            <div class="challenge-tag">문제</div>
+            <div class="challenge-text">영업용 번호판은 주행 중 지역명이 가려지는 경우가 많아 인식 실패율이 높았습니다.</div>
+          </div>
+          <div class="challenge-item">
+            <div class="challenge-tag solved">해결</div>
+            <div class="challenge-text">track ID별 지역명 메모리를 구현해, 한 번이라도 지역명을 읽으면 이후 프레임에서 재활용하도록 했습니다.</div>
+          </div>
+          <div class="challenge-item">
+            <div class="challenge-tag">문제</div>
+            <div class="challenge-text">영상 전환 시 이전 영상의 IO 작업 결과가 새 영상 DB에 섞이는 데이터 오염 문제가 발생했습니다.</div>
+          </div>
+          <div class="challenge-item">
+            <div class="challenge-tag solved">해결</div>
+            <div class="challenge-text">UUID 기반 토큰 시스템을 도입해 영상 전환 시 이전 작업을 자동 무효화했습니다.</div>
+          </div>
+        </div>
+
+        <div class="project-stack">
+          <span class="stack-tag">Python</span><span class="stack-tag">Flask</span><span class="stack-tag">React</span><span class="stack-tag">YOLO11n</span><span class="stack-tag">YOLOv8n</span><span class="stack-tag">OpenCV</span><span class="stack-tag">ByteTrack</span><span class="stack-tag">OpenVINO</span><span class="stack-tag">MySQL</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────── PROJECT 2: LLM 챗봇 ───────── -->
+    <div class="project-card fade-in">
+      <div class="project-header">
+        <div>
+          <div class="project-period">2026.03 — 2026.05</div>
+          <div class="project-title">TADS 고도화 — AI 챗봇</div>
+          <div class="project-subtitle">최종 프로젝트 · 6인 팀 | LLM 챗봇 파트 담당</div>
+        </div>
+        <div class="project-type-badge">MAIN PROJECT</div>
+      </div>
+
+      <div class="project-problem">
+        <div class="project-problem-title">문제 정의</div>
+        <p>관제 시스템 운영자가 DB에 쌓인 데이터를 조회하려면 SQL을 직접 작성해야 했습니다. 비개발자 운영자도 자연어로 데이터를 조회하고, 시스템 운영 지침도 바로 확인할 수 있는 챗봇이 필요했습니다.</p>
+      </div>
+
+      <div class="project-body">
+        <div class="project-body-title">핵심 기능</div>
+        <div class="feature-grid">
+          <div class="feature-item">
+            <div class="feature-header"><div class="feature-dot"></div><div class="feature-title">의도 분류 (SQL/RAG/BOTH)</div></div>
+            <div class="feature-desc">질문이 들어오면 GPT-4o-mini로 먼저 의도를 분류합니다. DB 조회가 필요하면 SQL, 지식 답변이 필요하면 RAG, 둘 다 필요하면 BOTH로 분기해 처리합니다.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-header"><div class="feature-dot"></div><div class="feature-title">Text-to-SQL</div></div>
+            <div class="feature-desc">스키마 컨텍스트를 프롬프트에 주입해 자연어를 SQL로 변환. 생성된 SQL은 정규식으로 SELECT문만 추출하고, 금지 키워드 필터로 읽기 전용 실행을 보장합니다.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-header"><div class="feature-dot"></div><div class="feature-title">RAG 검색</div></div>
+            <div class="feature-desc">운영 지침 문서를 ChromaDB에 임베딩해 저장. 질문과 유사한 문서를 검색해 답변 프롬프트에 주입합니다. Chroma DB를 persist해 서버 재시작 시 임베딩 비용을 절약합니다.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-header"><div class="feature-dot"></div><div class="feature-title">대화 맥락 유지</div></div>
+            <div class="feature-desc">MongoDB에 대화 이력을 저장하고 직전 대화를 프롬프트에 포함합니다. "아까 그거", "이번 주 말고 저번 주" 같은 짧은 후속 질문도 문맥을 이어받아 처리합니다.</div>
+          </div>
+        </div>
+
+        <div class="project-body-title">설계 포인트</div>
+        <div class="design-points">
+          <div class="design-point">
+            <div class="design-point-num">01</div>
+            <div class="design-point-content">
+              <div class="design-point-title">장애 격리 설계</div>
+              <div class="design-point-desc">MongoDB, RAG 시스템 등 외부 의존성이 실패해도 서버가 다운되지 않도록 모든 연결부에 try-catch와 None 체크를 적용했습니다. MongoDB 없이도 SQL 조회와 RAG 답변이 동작합니다.</div>
+            </div>
+          </div>
+          <div class="design-point">
+            <div class="design-point-num">02</div>
+            <div class="design-point-content">
+              <div class="design-point-title">의도 분류 정확도 측정 루프</div>
+              <div class="design-point-desc">대화 로그에 expected 필드를 추가해, 관리자가 실제 의도를 입력하면 LLM이 분류한 intent와 비교해 정확도를 KPI로 측정합니다. 프롬프트 개선의 근거 데이터로 활용합니다.</div>
+            </div>
+          </div>
+          <div class="design-point">
+            <div class="design-point-num">03</div>
+            <div class="design-point-content">
+              <div class="design-point-title">SQL 인젝션 방어</div>
+              <div class="design-point-desc">LLM이 생성한 SQL에 INSERT, UPDATE, DELETE, DROP 등 위험 키워드가 포함되면 실행 전에 차단합니다. SELECT만 허용하는 읽기 전용 구조로 DB 보호를 보장합니다.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-body-title">어려웠던 점과 해결</div>
+        <div class="challenges">
+          <div class="challenge-item">
+            <div class="challenge-tag">문제</div>
+            <div class="challenge-text">"아 이번주 말고 저번주" 같은 구어체 수정 표현이나 짧은 후속 질문에서 의도 분류가 틀리는 경우가 많았습니다.</div>
+          </div>
+          <div class="challenge-item">
+            <div class="challenge-tag solved">해결</div>
+            <div class="challenge-text">프롬프트에 예외 케이스를 하나씩 명시하고, 직전 대화 의도를 함께 주입해 문맥 기반으로 분류하도록 개선했습니다.</div>
+          </div>
+          <div class="challenge-item">
+            <div class="challenge-tag">문제</div>
+            <div class="challenge-text">서버 재시작마다 ChromaDB 임베딩을 재생성해 OpenAI API 비용이 낭비됐습니다.</div>
+          </div>
+          <div class="challenge-item">
+            <div class="challenge-tag solved">해결</div>
+            <div class="challenge-text">persist_directory에 저장하고, 이미 DB가 있으면 로드만 하도록 분기해 임베딩 비용을 제거했습니다.</div>
+          </div>
+        </div>
+
+        <div class="project-stack">
+          <span class="stack-tag">Python</span><span class="stack-tag">Flask</span><span class="stack-tag">GPT-4o-mini</span><span class="stack-tag">LangChain</span><span class="stack-tag">ChromaDB</span><span class="stack-tag">MongoDB</span><span class="stack-tag">MySQL</span><span class="stack-tag">SQLAlchemy</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────── PROJECT 3: 미니 프로젝트 ───────── -->
+    <div class="project-card fade-in">
+      <div class="project-header">
+        <div>
+          <div class="project-period">2026.02 — 2026.03</div>
+          <div class="project-title">TADS — 지능형 교통 관제 시스템</div>
+          <div class="project-subtitle">미니 프로젝트 · 6인 팀 | 시스템 팀 단독 담당 (프론트 + 백 + DB 전체)</div>
+        </div>
+        <div class="project-type-badge">MINI PROJECT</div>
+      </div>
+
+      <div class="project-problem">
+        <div class="project-problem-title">문제 정의</div>
+        <p>실시간 CCTV 영상에서 역주행·화재를 감지하고, 관제사에게 즉시 알람을 전달하는 시스템이 필요했습니다. 시스템 팀을 단독으로 담당해 프론트엔드, 백엔드, DB 설계 전체를 혼자 구현했습니다.</p>
+      </div>
+
+      <div class="project-body">
+        <div class="project-body-title">핵심 기능</div>
+        <div class="feature-grid">
+          <div class="feature-item">
+            <div class="feature-header"><div class="feature-dot"></div><div class="feature-title">실시간 감지 파이프라인</div></div>
+            <div class="feature-desc">YOLOv8 모델로 역주행·화재를 감지하고, 감지 즉시 Socket.IO로 알람 전송 → DB 저장 → 관제 대시보드 표시까지 전체 파이프라인을 단독 구현했습니다.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-header"><div class="feature-dot"></div><div class="feature-title">관제 대시보드</div></div>
+            <div class="feature-desc">Flask REST API + Socket.IO 실시간 알람, React 기반 지도·통계 대시보드 구축. Kakao Maps API로 감지 위치를 지도에 표시하고, Chart.js로 통계를 시각화했습니다.</div>
+          </div>
+        </div>
+
+        <div class="project-stack">
+          <span class="stack-tag">Python</span><span class="stack-tag">Flask</span><span class="stack-tag">React</span><span class="stack-tag">MySQL</span><span class="stack-tag">YOLOv8</span><span class="stack-tag">Socket.IO</span><span class="stack-tag">Kakao Maps</span><span class="stack-tag">Chart.js</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-inner">
+    <div class="section-label">Skills & Certifications</div>
+    <div class="skills-grid fade-in">
+      <div class="skill-card">
+        <div class="skill-card-icon" style="background:#dbeafe;">🤖</div>
+        <div class="skill-card-title">AI / Vision</div>
+        <div class="skill-tags"><span class="skill-tag">YOLOv8</span><span class="skill-tag">YOLO11n</span><span class="skill-tag">ByteTrack</span><span class="skill-tag">OpenVINO</span><span class="skill-tag">PaddleOCR</span><span class="skill-tag">OpenCV</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon" style="background:#d1fae5;">💬</div>
+        <div class="skill-card-title">LLM / RAG</div>
+        <div class="skill-tags"><span class="skill-tag">GPT-4o</span><span class="skill-tag">LangChain</span><span class="skill-tag">ChromaDB</span><span class="skill-tag">Text-to-SQL</span><span class="skill-tag">RAG Pipeline</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon" style="background:#fef3c7;">⚙️</div>
+        <div class="skill-card-title">Backend</div>
+        <div class="skill-tags"><span class="skill-tag">Python</span><span class="skill-tag">Flask</span><span class="skill-tag">Socket.IO</span><span class="skill-tag">SQLAlchemy</span><span class="skill-tag">MySQL</span><span class="skill-tag">MongoDB</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon" style="background:#ede9fe;">🖥️</div>
+        <div class="skill-card-title">Frontend</div>
+        <div class="skill-tags"><span class="skill-tag">React</span><span class="skill-tag">Vite</span><span class="skill-tag">JavaScript</span><span class="skill-tag">Kakao Maps</span><span class="skill-tag">Chart.js</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon" style="background:#fee2e2;">☁️</div>
+        <div class="skill-card-title">Infra / DevOps</div>
+        <div class="skill-tags"><span class="skill-tag">Docker</span><span class="skill-tag">GitHub Actions</span><span class="skill-tag">AWS EC2</span><span class="skill-tag">AWS RDS</span><span class="skill-tag">Nginx</span><span class="skill-tag">Cloudflare</span></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon" style="background:#f0fdf4;">📋</div>
+        <div class="skill-card-title">Languages & Tools</div>
+        <div class="skill-tags"><span class="skill-tag">Python</span><span class="skill-tag">JavaScript</span><span class="skill-tag">SQL</span><span class="skill-tag">Git</span><span class="skill-tag">GitHub</span></div>
+      </div>
+    </div>
+    <div class="certs-row fade-in">
+      <div class="cert-card">
+        <div class="cert-icon">📜</div>
+        <div><div class="cert-name">정보처리기사</div><div class="cert-org">한국산업인력공단</div><div class="cert-date">2024.06 취득</div></div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">🗄️</div>
+        <div><div class="cert-name">SQL 개발자 (SQLD)</div><div class="cert-org">한국데이터산업진흥원</div><div class="cert-date">2023.12 취득</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-inner">
+    <div class="section-label">Education</div>
+    <div class="edu-list fade-in">
+      <div class="edu-item">
+        <div class="edu-period">2025.11<br>— 현재</div>
+        <div>
+          <div class="edu-name">AI-X 스마트 교통 및 인프라 유지관리 아카데미</div>
+          <div class="edu-org">대보정보통신 · MBC아카데미 화곡점 · 수강 중</div>
+          <ul class="edu-points">
+            <li>YOLOv8 기반 AI 모델 개발 및 실시간 교통 이상 감지 시스템 구현</li>
+            <li>Flask + React 풀스택 개발, MySQL DB 설계, Docker CI/CD 파이프라인 구축</li>
+            <li>GPT-4o + LangChain 기반 Text-to-SQL · RAG 챗봇 설계 및 구현</li>
+            <li>6인 팀 프로젝트(TADS) 시스템 팀 단독 담당 및 번호판 인식 모듈 개발</li>
+          </ul>
+        </div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-period">2023.10<br>— 2024.04</div>
+        <div>
+          <div class="edu-name">웹 융합 SW 기반 빅데이터 솔루션 개발자 양성과정</div>
+          <div class="edu-org">(주)케이지에듀원 IT뱅크 부산학원 · 수료</div>
+          <ul class="edu-points">
+            <li>웹 개발, 데이터 처리, 데이터베이스 활용 중심의 실무형 교육 과정 이수</li>
+            <li>팀 프로젝트를 통한 협업 경험 및 문제 해결 능력 강화</li>
+          </ul>
+        </div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-period">2016.03<br>— 2022.02</div>
+        <div>
+          <div class="edu-name">컴퓨터공학부</div>
+          <div class="edu-org">인제대학교 · 학점 3.79 / 4.5 · 수료</div>
+          <ul class="edu-points">
+            <li>자료구조, 알고리즘, 데이터베이스 등 CS 기초 역량 학습</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="contact-heading fade-in">함께 일하고 싶다면<br><span>언제든 연락주세요.</span></div>
+    <div class="contact-row fade-in">
+      <a href="tel:010-2077-4366" class="contact-link"><div class="contact-link-dot"></div>010-2077-4366</a>
+      <a href="mailto:qksdkqksdk5@naver.com" class="contact-link"><div class="contact-link-dot"></div>qksdkqksdk5@naver.com</a>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 LEE DONG-HOON. ALL RIGHTS RESERVED.</div>
+      <div class="footer-copy">신입 AI & 백엔드 개발자</div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
